@@ -141,3 +141,18 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+# Expo
+.expo/
+.expo-shared/
+web-build/
+
+# Android build folder and local properties
+android/build/
+android/app/build/
+android/.gradle/
+android/local.properties
+*.keystore
+
+# macOS/OSX
+.DS_Store

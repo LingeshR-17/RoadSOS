@@ -1,0 +1,23 @@
+{
+  "expo": {
+    "name": "RoadSoS",
+    "slug": "roadsos",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.roadsos.app"
+    },
+    "android": {
+      "package": "com.roadsos.app"
+    },
+    "plugins": [
+      "expo-router"
+    ],
+    "scheme": "roadsos",
+    "web": {
+      "bundler": "metro"
+    }
+  }
+}
