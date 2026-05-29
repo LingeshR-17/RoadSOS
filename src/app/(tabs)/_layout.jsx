@@ -1,80 +1,86 @@
 import React from 'react';
+import { View, Platform } from 'react-native';
 import { Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import { Platform, StyleSheet, View } from 'react-native';
 import { COLORS, SHADOWS } from '../../constants/theme';
 
+/**
+ * TabsLayout
+ * 
+ * Production tab navigator with 4 high-contrast bottom tabs:
+ *  1. index  → "Map"       (root map layer screen with floating SOS)
+ *  2. responder → "Open Jobs" (for professional responders / drivers)
+ *  3. chat   → "AI Chat"   (chatbot + push-to-talk voice assistant)
+ *  4. profile → "Profile"  (user profile, documents, logout)
+ */
 export default function TabsLayout() {
   return (
-    <Tabs
-      screenOptions={{
-        headerShown: false,
-        tabBarActiveTintColor: COLORS.secondary,
-        tabBarInactiveTintColor: COLORS.textMuted,
-        tabBarShowLabel: true,
-        tabBarLabelStyle: {
-          fontSize: 10,
-          fontWeight: '700',
-          marginBottom: Platform.OS === 'ios' ? 0 : 4,
-        },
-        tabBarStyle: styles.tabBar,
-      }}
-    >
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? "home" : "home-outline"} size={22} color={color} />
-          ),
+    <View style={{ flex: 1 }}>
+      <Tabs
+        screenOptions={{
+          headerShown: false,
+          tabBarActiveTintColor: COLORS.primary,
+          tabBarInactiveTintColor: COLORS.textMuted,
+          tabBarStyle: {
+            backgroundColor: COLORS.card,
+            borderTopWidth: 1,
+            borderTopColor: COLORS.border,
+            height: Platform.OS === 'ios' ? 88 : 64,
+            paddingBottom: Platform.OS === 'ios' ? 28 : 8,
+            paddingTop: 8,
+            ...SHADOWS.lg,
+          },
+          tabBarLabelStyle: {
+            fontSize: 10,
+            fontWeight: '700',
+            letterSpacing: 0.3,
+          },
         }}
-      />
-      <Tabs.Screen
-        name="map"
-        options={{
-          title: 'Map',
-          tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? "map" : "map-outline"} size={22} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="chat"
-        options={{
-          title: 'Chat',
-          tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? "chatbubble-ellipses" : "chatbubble-ellipses-outline"} size={22} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="profile"
-        options={{
-          title: 'Profile',
-          tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? "person" : "person-outline"} size={22} color={color} />
-          ),
-        }}
-      />
-    </Tabs>
+      >
+        <Tabs.Screen
+          name="index"
+          options={{
+            title: 'Map',
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="map" size={size} color={color} />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="responder"
+          options={{
+            title: 'Responder',
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="briefcase" size={size} color={color} />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="chat"
+          options={{
+            title: 'AI Chat',
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="chatbubble-ellipses" size={size} color={color} />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="profile"
+          options={{
+            title: 'Profile',
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="person-circle" size={size} color={color} />
+            ),
+          }}
+        />
+        {/* Hide the old map tab from the tab bar — it's been promoted to index */}
+        <Tabs.Screen
+          name="map"
+          options={{
+            href: null,
+          }}
+        />
+      </Tabs>
+    </View>
   );
 }
-
-const styles = StyleSheet.create({
-  tabBar: {
-    backgroundColor: COLORS.card,
-    borderTopWidth: 0,
-    height: Platform.OS === 'ios' ? 88 : 64,
-    paddingTop: 8,
-    paddingBottom: Platform.OS === 'ios' ? 26 : 8,
-    position: 'absolute',
-    bottom: Platform.OS === 'ios' ? 24 : 12,
-    left: 16,
-    right: 16,
-    borderRadius: 24,
-    borderWidth: 1,
-    borderColor: COLORS.border,
-    ...SHADOWS.md,
-    elevation: 8,
-  },
-});

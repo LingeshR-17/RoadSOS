@@ -69,3 +69,91 @@ export const BORDER_RADIUS = {
   xl: 24,
   round: 9999,
 };
+
+export const theme = {
+  colors: {
+    primary: COLORS.primary,
+    secondary: COLORS.secondary,
+    background: '#090b0e', // Dark mode background from incoming
+    backgroundLight: '#11141b',
+    cardBackground: 'rgba(22, 26, 35, 0.75)',
+    border: 'rgba(255, 255, 255, 0.08)',
+    
+    // Core accents
+    emergencyRed: '#ff3b30',
+    emergencyNeon: '#ff2d55',
+    emergencyGlow: 'rgba(255, 45, 85, 0.45)',
+    
+    // Bystander (Sky Blue)
+    bystanderBg: '#111b2b',
+    bystanderBorder: 'rgba(0, 199, 255, 0.2)',
+    bystanderNeon: '#00c7ff',
+    bystanderGlow: 'rgba(0, 199, 255, 0.45)',
+    
+    // Safe / Terminated (Neon Green)
+    safeBg: '#0f1f15',
+    safeBorder: 'rgba(52, 199, 89, 0.2)',
+    safeNeon: '#34c759',
+    safeGlow: 'rgba(52, 199, 89, 0.45)',
+
+    // UI Status
+    success: '#34c759',
+    warning: '#ff9500',
+    info: '#007aff',
+    
+    // Text
+    textPrimary: '#ffffff',
+    textSecondary: '#8e8e93',
+    textMuted: '#48484a',
+  },
+  shadows: {
+    neonRed: {
+      shadowColor: '#ff2d55',
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.5,
+      shadowRadius: 15,
+      elevation: 8,
+    },
+    neonBlue: {
+      shadowColor: '#00c7ff',
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.5,
+      shadowRadius: 15,
+      elevation: 8,
+    },
+    neonGreen: {
+      shadowColor: '#34c759',
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.5,
+      shadowRadius: 15,
+      elevation: 8,
+    },
+    card: {
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 8 },
+      shadowOpacity: 0.3,
+      shadowRadius: 12,
+      elevation: 4,
+    }
+  },
+  fonts: {
+    heading: 'System',
+    body: 'System',
+  },
+  spacing: {
+    xs: 4,
+    sm: 8,
+    md: 16,
+    lg: 24,
+    xl: 32,
+    xxl: 48,
+  },
+  borderRadius: {
+    sm: 4,
+    md: 8,
+    lg: 16,
+    xl: 24,
+    round: 9999,
+  }
+};
+

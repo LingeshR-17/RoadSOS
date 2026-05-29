@@ -1,0 +1,74 @@
+{
+  "IN": {
+    "displayName": "India",
+    "ambulance": "108",
+    "police": "100",
+    "fire": "101",
+    "unified": "112",
+    "notes": "You can also dial the unified emergency line 112 or secondary ambulance line 102."
+  },
+  "US": {
+    "displayName": "United States",
+    "ambulance": "911",
+    "police": "911",
+    "fire": "911",
+    "unified": "911",
+    "notes": "Unified line 911 handles all emergency services."
+  },
+  "JP": {
+    "displayName": "Japan",
+    "ambulance": "119",
+    "police": "110",
+    "fire": "119",
+    "unified": "119",
+    "notes": "State 'Kyu-Kyu' for medical emergency / ambulance."
+  },
+  "KR": {
+    "displayName": "South Korea",
+    "ambulance": "119",
+    "police": "112",
+    "fire": "119",
+    "unified": "119",
+    "notes": "Ambulance and Fire share 119. Police is 112."
+  },
+  "TW": {
+    "displayName": "Taiwan",
+    "ambulance": "119",
+    "police": "110",
+    "fire": "119",
+    "unified": "119",
+    "notes": "Ambulance and Fire share 119. Police is 110."
+  },
+  "CN": {
+    "displayName": "China",
+    "ambulance": "120",
+    "police": "110",
+    "fire": "119",
+    "unified": "110",
+    "notes": "Ambulance is 120, Fire is 119, Police is 110."
+  },
+  "SG": {
+    "displayName": "Singapore",
+    "ambulance": "995",
+    "police": "999",
+    "fire": "995",
+    "unified": "995",
+    "notes": "Ambulance and Fire share 995. Note: 999 is strictly for Police."
+  },
+  "RU": {
+    "displayName": "Russia",
+    "ambulance": "103",
+    "police": "102",
+    "fire": "101",
+    "unified": "112",
+    "notes": "Ambulance is 103. Unified line is 112."
+  },
+  "TH": {
+    "displayName": "Thailand",
+    "ambulance": "1669",
+    "police": "191",
+    "fire": "199",
+    "unified": "191",
+    "notes": "Ambulance is 1669. Tourist Police can be reached at 1155."
+  }
+}

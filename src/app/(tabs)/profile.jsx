@@ -17,7 +17,7 @@ import ProfileHeader from '../../components/profile/ProfileHeader';
 import MedicalInfoCard from '../../components/profile/MedicalInfoCard';
 import EmergencyContactList from '../../components/profile/EmergencyContactList';
 import { useUserStore } from '../../store/userStore';
-import { COLORS, SPACING, SHADOWS } from '../../constants/theme';
+import { COLORS, SPACING, SHADOWS, BORDER_RADIUS } from '../../constants/theme';
 
 export default function ProfileScreen() {
   const router = useRouter();
@@ -27,7 +27,8 @@ export default function ProfileScreen() {
     emergencyContacts, 
     addEmergencyContact, 
     updateProfile, 
-    updateMedicalInfo 
+    updateMedicalInfo,
+    logout,
   } = useUserStore();
   
   // Modal State for adding new emergency contact
@@ -138,6 +139,76 @@ export default function ProfileScreen() {
           contacts={emergencyContacts} 
           onAddPress={() => setContactModalVisible(true)} 
         />
+
+        {/* ── DOCUMENT CARDS ── */}
+        <View style={styles.docsSection}>
+          <Text style={styles.docsSectionTitle}>IDENTITY DOCUMENTS</Text>
+          
+          <TouchableOpacity style={styles.docCard} activeOpacity={0.8}
+            onPress={() => Alert.alert('Aadhaar Card', 'Link or upload your Aadhaar card for emergency identification.', [{ text: 'Upload', onPress: () => {} }, { text: 'Cancel', style: 'cancel' }])}
+          >
+            <View style={[styles.docIconCircle, { backgroundColor: 'rgba(59, 130, 246, 0.1)' }]}>
+              <Ionicons name="id-card" size={20} color={COLORS.secondary} />
+            </View>
+            <View style={styles.docInfo}>
+              <Text style={styles.docTitle}>Aadhaar Card</Text>
+              <Text style={styles.docStatus}>Not linked</Text>
+            </View>
+            <Ionicons name="chevron-forward" size={18} color={COLORS.textMuted} />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.docCard} activeOpacity={0.8}
+            onPress={() => Alert.alert('Driving License', 'Link your DL for quick accident reporting.', [{ text: 'Upload', onPress: () => {} }, { text: 'Cancel', style: 'cancel' }])}
+          >
+            <View style={[styles.docIconCircle, { backgroundColor: 'rgba(245, 158, 11, 0.1)' }]}>
+              <Ionicons name="car" size={20} color={COLORS.warning} />
+            </View>
+            <View style={styles.docInfo}>
+              <Text style={styles.docTitle}>Driving License</Text>
+              <Text style={styles.docStatus}>Not linked</Text>
+            </View>
+            <Ionicons name="chevron-forward" size={18} color={COLORS.textMuted} />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.docCard} activeOpacity={0.8}
+            onPress={() => Alert.alert('Insurance Policy', 'Link your motor insurance for instant claim dispatch.', [{ text: 'Upload', onPress: () => {} }, { text: 'Cancel', style: 'cancel' }])}
+          >
+            <View style={[styles.docIconCircle, { backgroundColor: 'rgba(16, 185, 129, 0.1)' }]}>
+              <Ionicons name="shield-checkmark" size={20} color={COLORS.success} />
+            </View>
+            <View style={styles.docInfo}>
+              <Text style={styles.docTitle}>Insurance Policy</Text>
+              <Text style={styles.docStatus}>Not linked</Text>
+            </View>
+            <Ionicons name="chevron-forward" size={18} color={COLORS.textMuted} />
+          </TouchableOpacity>
+        </View>
+
+        {/* ── LOGOUT ── */}
+        <TouchableOpacity
+          style={styles.logoutBtn}
+          activeOpacity={0.8}
+          onPress={() => {
+            Alert.alert(
+              'Logout',
+              'Are you sure you want to sign out?',
+              [
+                { text: 'Cancel', style: 'cancel' },
+                {
+                  text: 'Logout',
+                  style: 'destructive',
+                  onPress: () => {
+                    if (logout) logout();
+                    router.replace('/(auth)/login');
+                  },
+                },
+              ]
+            );
+          }}
+        >
+          <Ionicons name="log-out-outline" size={18} color={COLORS.primary} />
+          <Text style={styles.logoutBtnText}>Logout</Text>
+        </TouchableOpacity>
 
         {/* Safety Spacer for custom bottom floating navigation bar */}
         <View style={styles.bottomSpacer} />
@@ -335,6 +406,70 @@ const styles = StyleSheet.create({
   },
   bottomSpacer: {
     height: 110,
+  },
+  // Document Cards
+  docsSection: {
+    marginHorizontal: SPACING.lg,
+    marginTop: SPACING.lg,
+  },
+  docsSectionTitle: {
+    fontSize: 11,
+    fontWeight: '800',
+    color: COLORS.textMuted,
+    letterSpacing: 1.5,
+    marginBottom: SPACING.sm,
+  },
+  docCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: COLORS.card,
+    borderRadius: BORDER_RADIUS.md,
+    padding: SPACING.md,
+    marginBottom: SPACING.sm,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+    ...SHADOWS.sm,
+  },
+  docIconCircle: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: SPACING.md,
+  },
+  docInfo: {
+    flex: 1,
+  },
+  docTitle: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: COLORS.text,
+  },
+  docStatus: {
+    fontSize: 11,
+    fontWeight: '600',
+    color: COLORS.textMuted,
+    marginTop: 2,
+  },
+  // Logout
+  logoutBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(230, 57, 70, 0.06)',
+    borderRadius: BORDER_RADIUS.md,
+    height: 48,
+    marginHorizontal: SPACING.lg,
+    marginTop: SPACING.lg,
+    borderWidth: 1.5,
+    borderColor: 'rgba(230, 57, 70, 0.15)',
+  },
+  logoutBtnText: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: COLORS.primary,
+    marginLeft: 8,
   },
   editProfileBtn: {
     flexDirection: 'row',
