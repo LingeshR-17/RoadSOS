@@ -13,7 +13,8 @@
       "package": "com.roadsos.app"
     },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      "expo-web-browser"
     ],
     "scheme": "roadsos",
     "web": {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -15,9 +15,14 @@ import {
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import * as WebBrowser from 'expo-web-browser';
+import * as Google from 'expo-auth-session/providers/google';
 import { useUserStore } from '../../store/userStore';
 import { api } from '../../services/api';
 import { COLORS, SPACING, SHADOWS } from '../../constants/theme';
+
+// Instructs web browsers to handle redirect resolution correctly
+WebBrowser.maybeCompleteAuthSession();
 
 export default function LoginScreen() {
   const router = useRouter();
@@ -36,8 +41,27 @@ export default function LoginScreen() {
   const [recoveryLoading, setRecoveryLoading] = useState(false);
   const [recoveryError, setRecoveryError] = useState('');
 
+  // Setup the explicit native Google OAuth application request hooks
+  const [request, response, promptAsync] = Google.useAuthRequest({
+    // Replace with your real Web Client ID copied from your Firebase Console Auth dashboard
+    webClientId: 'Y617297950462-lecboa097s58asek1qp2tcj66hd7golm.apps.googleusercontent.com',
+    androidClientId: 'YOUR_ANDROID_CLIENT_ID.apps.googleusercontent.com', // Optional: if building standalone apks later
+    iosClientId: 'YOUR_IOS_CLIENT_ID.apps.googleusercontent.com',         // Optional: if building standalone ipas later
+  });
+
+  // Watch for active Google authentication response parameters
+  useEffect(() => {
+    if (response?.type === 'success') {
+      const { authentication } = response;
+      if (authentication?.idToken) {
+        processGoogleLogin(authentication.idToken);
+      } else {
+        setError('Google login failed: Access token missing.');
+      }
+    }
+  }, [response]);
+
   const generateOtp = () => {
-    // Generate a random 4-digit OTP for demo purposes
     const code = String(Math.floor(1000 + Math.random() * 9000));
     setGeneratedOtp(code);
     return code;
@@ -53,7 +77,7 @@ export default function LoginScreen() {
       setLoading(true);
       try {
         await api.requestOtp(phoneNumber);
-        const code = generateOtp();
+        generateOtp();
         setStep(2);
       } catch (err) {
         setError('Failed to send OTP code. Please try again.');
@@ -65,39 +89,38 @@ export default function LoginScreen() {
         setError('Please enter the 4-digit verification code');
         return;
       }
-      if (otp !== generatedOtp) {
-        setError('Incorrect OTP. Please check the code and try again.');
-        return;
-      }
+      
       setLoading(true);
       try {
+        // Sends parameters directly down to your Zustand Store and Firestore backend
         const { isOnboarded } = await loginWithOtp(phoneNumber, otp);
+        
+        // Dynamic router routing transitions evaluated from live Firestore properties
         if (isOnboarded) {
           router.replace('/(tabs)');
         } else {
           router.replace('/(auth)/onboarding');
         }
       } catch (err) {
-        setError('Verification failed. Please try again.');
+        setError('Verification failed. Please check your network connection and try again.');
       } finally {
         setLoading(false);
       }
     }
   };
 
-  const handleGoogleSignIn = async () => {
+  const processGoogleLogin = async (idToken) => {
     setError('');
     setLoading(true);
     try {
-      // Pass a simulated oauth token
-      const { isOnboarded } = await loginWithGoogle('google-oauth-identity-token-xyz');
+      const { isOnboarded } = await loginWithGoogle(idToken);
       if (isOnboarded) {
         router.replace('/(tabs)');
       } else {
         router.replace('/(auth)/onboarding');
       }
     } catch (err) {
-      setError('Google Sign-in failed. Please try again.');
+      setError('Google Sign-in failed to synchronize with user profile.');
     } finally {
       setLoading(false);
     }
@@ -115,8 +138,8 @@ export default function LoginScreen() {
       setRecoverModalVisible(false);
       setRecoveryInput('');
       Alert.alert(
-        'Recovery Code Sent',
-        'We have sent a verification code to reset your login PIN.',
+        'Recovery Query Sent',
+        'We have verified your query details against our server listings.',
         [{ text: 'OK' }]
       );
     } catch (err) {
@@ -246,10 +269,10 @@ export default function LoginScreen() {
 
             {step === 1 && (
               <TouchableOpacity
-                style={styles.googleButton}
+                style={[styles.googleButton, (!request) && styles.disabledButton]}
                 activeOpacity={0.8}
-                onPress={handleGoogleSignIn}
-                disabled={loading}
+                onPress={() => promptAsync()}
+                disabled={loading || !request}
               >
                 <Ionicons name="logo-google" size={18} color={COLORS.primary} style={styles.googleIcon} />
                 <Text style={styles.googleButtonText}>Sign In with Google</Text>
@@ -583,7 +606,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: SPACING.xl,
     lineHeight: 16,
   },
-  // Modal Styles
   modalOverlay: {
     flex: 1,
     backgroundColor: 'rgba(15, 23, 42, 0.45)',
